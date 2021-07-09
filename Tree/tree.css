@@ -1,0 +1,122 @@
+.w_tree_container {
+    user-select: none;
+}
+
+.node_child {
+    margin-left: 20px;
+}
+
+.node_label:hover {
+    /* color: white; */
+    cursor: pointer;
+    /* background-color: linerg cadetblue; */
+    background-image: linear-gradient(to right, rgba(171, 232, 238, 0.8), rgba(250, 250, 250, 0.5));
+    background-image: -webkit-linear-gradient(to right, rgba(171, 232, 238, 0.8), rgba(250, 250, 250, 0.5));
+}
+
+@keyframes animation_node_open {
+    from {
+        height: 0px;
+        display: none;
+        opacity: 0;
+    }
+
+    to {
+        height: 22px;
+        display: block;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes animation_node_open {
+    from {
+        height: 0px;
+        display: none;
+        opacity: 0;
+    }
+
+    to {
+        height: 22px;
+        display: block;
+        opacity: 1;
+    }
+}
+
+.node_child {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
+}
+
+
+/* 节点打开 */
+.node_open {
+    opacity: 1;
+    display: block;
+    visibility: visible !important;
+    /* animation: animation_node_open 0.2s; */
+    transition: all 0.2s;
+}
+
+.node_label.icon_open>.icon-node {
+    transform: rotate(90deg);
+    transition: transform 0.4s ease;
+}
+
+.icon-node {
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.5s ease;
+}
+
+.node_child:empty {
+    color: aqua;
+}
+
+.icon-node:before {
+    position: relative;
+    top: -2px;
+}
+
+.icon_no:before {
+    content: "";
+}
+
+.icon_no {
+    width: 12px;
+    /* height: 21px; */
+    display: inline-block;
+}
+
+.node_name {
+    display: inline-block;
+}
+
+/* 节点编辑 */
+.node_edit_group {
+    display: inline-block;
+    margin-left: 5px;
+    display: none;
+}
+
+.node_edit_group span {
+    margin: 2px;
+    padding: 0 2px;
+}
+
+.node_edit_group span:hover {
+    background: #eee;
+}
+
+.node_label:hover>.node_edit_group {
+    display: inline-block;
+}
+
+/* edit icon */
+.node_edit_group [class^="icon-"]:before,
+.node_edit_group [class*=" icon-"]:before,
+.node_edit_group [class^="icon-"]:after,
+.node_edit_group [class*=" icon-"]:after {
+    font-size: 14px;
+    color: #999;
+}

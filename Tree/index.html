@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../fonts/iconfont.css">
+    <link rel="stylesheet" href="./icon_config.css">
+    <link rel="stylesheet" href="./tree.css">
+    <style>
+        #wrap {
+            user-select: none;
+            width: 70%;
+            min-width: 280px;
+            margin: 0 auto;
+        }
+
+        #tree_wrap {
+            width: 100%;
+            min-width: 280px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="wrap">
+        <input type="file" name="" id="" webkitdirectory directory onchange="on_file_chg(this)">
+        <div id="tree_wrap"></div>
+    </div>
+
+    <script src="./tree.js"></script>
+    <script>
+        let data = [{
+            name: "root",
+            children: [{
+                name: "音乐",
+                children: [{
+                    name: "let's fall in love tonigth",
+                    children: []
+                }]
+            }, {
+                name: "中国",
+                children: [{
+                    name: "省市",
+                    children: [{
+                        name: "北京",
+                        children: []
+                    }, {
+                        name: "上海",
+                        children: []
+                    }, {
+                        name: "广西",
+                        children: [{
+                            name: "南宁",
+                            children: []
+                        }]
+                    }, {
+                        name: "广东",
+                        children: [{
+                            name: "深圳",
+                            children: []
+                        }]
+                    }]
+                }]
+            }]
+        }]
+        let gobjTree = new Tree()
+        gobjTree.setParams({
+            id: "tree_wrap",
+            edit: ["add", "edit", "delete"],
+            icon: true,
+            done: () => {
+                gobjTree.getData()
+            }
+        })
+        gobjTree.render(data)
+        gobjTree.onClickEdit(function (type, data) {
+            console.log("[编辑回调]", type, data);
+        })
+
+        function on_file_chg(dom) {
+            let oInput = dom.Files
+            var obj = new constructFileToTree()
+            var data = obj.getData(dom.files)
+            // alert("[文件变动]")
+            console.log("[文件变动]");
+            document.getElementById("tree_wrap").innerHTML = ""
+            gobjTree.render(data)
+        }
+
+        // 获取节点
+        function getNodeChecked(params) {
+            gobjTree.getChecked()
+        }
+    </script>
+</body>
+
+</html>

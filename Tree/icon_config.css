@@ -1,0 +1,72 @@
+/* 覆盖icon */
+[class^="icon-"]:before,
+[class*=" icon-"]:before,
+[class^="icon-"]:after,
+[class*=" icon-"]:after {
+    font-family: "iconfont" !important;
+    font-size: 14px;
+    color: #666;
+    /* font-weight: 600; */
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.icon-shuyi_xiala:before {
+    content: "\e629";
+}
+
+/* 重命名图标 */
+/* 节点打开按钮 */
+.icon-node:before {
+    content: "\e6dd";
+    font-size: 12px;
+}
+
+/* 添加按钮 */
+.icon-add:before {
+    content: "\e627";
+}
+
+/* 删除 */
+.icon-delete:before {
+    content: "\e624";
+}
+
+.icon-edit:before {
+    content: "\e620";
+}
+
+/* 文件夹 */
+.icon-files:before {
+    content: "\e628";
+}
+
+.icon-txt:before {
+    content: "\e61d";
+}
+
+.icon-pdf:before {
+    content: "\e61c";
+}
+
+.icon-pic:before {
+    content: "\e61f";
+}
+
+.icon-word:before {
+    content: "\e623";
+}
+
+.icon-file-default:before {
+    content: "\e622";
+}
+
+.icon-excel:before {
+    content: "\e61e";
+}
+
+.icon-ppt:before {
+    content: "\e621";
+}

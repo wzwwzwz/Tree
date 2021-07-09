@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "iconfont";
+  /* Project id 2661016 */
+  src: url('iconfont.woff2?t=1625734050880') format('woff2'),
+    url('iconfont.woff?t=1625734050880') format('woff'),
+    url('iconfont.ttf?t=1625734050880') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jiediankaishi:before {
+  content: "\e6dd";
+}
+
+.icon-shuyi_pdf:before {
+  content: "\e61c";
+}
+
+.icon-shuyi_txt:before {
+  content: "\e61d";
+}
+
+.icon-shuyi_excel:before {
+  content: "\e61e";
+}
+
+.icon-shuyi_pic:before {
+  content: "\e61f";
+}
+
+.icon-shuyi_bianji:before {
+  content: "\e620";
+}
+
+.icon-shuyi_ppt:before {
+  content: "\e621";
+}
+
+.icon-shuyi_caidan:before {
+  content: "\e622";
+}
+
+.icon-shuyi_word:before {
+  content: "\e623";
+}
+
+.icon-shuyi_qingchu-lajitong:before {
+  content: "\e624";
+}
+
+.icon-a-shuyi_tianjia-:before {
+  content: "\e627";
+}
+
+.icon-shuyi_wenjianjia:before {
+  content: "\e628";
+}
+
+.icon-shuyi_xiala:before {
+  content: "\e629";
+}
