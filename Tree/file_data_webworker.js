@@ -1,3 +1,6 @@
+// webworker模式处理目录数据
+
+
 /********************************************************************
  * @description 树形控件类
  * @class Tree
@@ -63,7 +66,7 @@ class Tree {
      *      }
      *  }
      * @return { Boolean } true || false
-    *********************************************************************/
+     *********************************************************************/
     setParams(obj) {
         if (typeof obj !== "object" || obj.constructor !== Object) {
             return false;
@@ -72,7 +75,7 @@ class Tree {
         this.setId(obj.id);
         this.setEdit(obj.edit);
         this.showIcon = typeof obj.icon === "boolean" ? obj.icon : false;
-        this.done = typeof obj.done === "function" ? obj.done : function () { };
+        this.done = typeof obj.done === "function" ? obj.done : function () {};
     }
 
     /*********************************************************************
@@ -149,7 +152,13 @@ class Tree {
      * @param { Object } 节点数据对象 { name:节点名称, strChild:子节点字符串, id:节点id, pid:父节点id }
      * @return { string } 节点字符串
      *********************************************************************/
-    getItemHtml({ id, pid, name = "", strChild = "", icon }) {
+    getItemHtml({
+        id,
+        pid,
+        name = "",
+        strChild = "",
+        icon
+    }) {
         // node_parent_container === (有子节点的节点)节点图标容器
         // n_icon_coustom === 自定义图标
         if (this.showIcon) {
@@ -204,10 +213,11 @@ class Tree {
         }
 
         this.DATA = {};
-        var objContainer = document.getElementById(this.id);
-        if (!objContainer) {
-            return false;
-        }
+        var objContainer = {}
+        // var objContainer = document.getElementById(this.id);
+        // if (!objContainer) {
+        //     return false;
+        // }
 
         this.oContainer = objContainer;
         // save tree obj
@@ -234,26 +244,39 @@ class Tree {
                 this.saveData(itemId, oItem);
 
                 if (!oItem.children.length) {
-                    itemHtml += this.getItemHtml({ name: oItem.name, strChild: "", id: oItem.id, pid: pid, icon: icon_type });
+                    itemHtml += this.getItemHtml({
+                        name: oItem.name,
+                        strChild: "",
+                        id: oItem.id,
+                        pid: pid,
+                        icon: icon_type
+                    });
                     continue;
                 }
 
                 let res = loop(oItem.children, itemId);
-                itemHtml += this.getItemHtml({ name: oItem.name, strChild: res, id: oItem.id, pid: pid, icon: icon_type });
+                itemHtml += this.getItemHtml({
+                    name: oItem.name,
+                    strChild: res,
+                    id: oItem.id,
+                    pid: pid,
+                    icon: icon_type
+                });
             }
 
             return itemHtml;
         };
 
-        objContainer.innerHTML = `<div class='w_tree_container'>${loop(aData, -1)}</div>`;
+        
+        // objContainer.innerHTML = `<div class='w_tree_container'>${loop(aData, -1)}</div>`;
         // console.log(this.DATA);
         this.nodeId = itemId;
-        this.initEvent();
+        // this.initEvent();
         if (typeof this.done === "function") {
             this.done();
         }
 
-        return true;
+        return loop(aData, -1);
     }
 
     /*********************************************************************
@@ -551,4 +574,36 @@ class constructFileToTree {
             str_parent: str_key,
         };
     }
+}
+
+
+var obj_tree = new Tree()
+var obj_file = new constructFileToTree()
+
+// 接收外部发送的数据
+onmessage = function (e) {
+    let data = e ? e.data : ""
+    let value = null
+    if ((value = data.init_set)) {
+        obj_tree.setParams(value)
+        // obj_tree.render(data)
+        // obj_tree.onClickEdit(function (type, data) {
+        //     console.log("[编辑回调]", type, data);
+        // })
+        return
+    }
+
+    var file_value = null
+    if ((file_value = data.file)) {
+        console.time()
+        var tree_data = obj_file.getData(file_value)
+        var str_html = obj_tree.render(tree_data)
+        console.timeEnd()
+        postMessage({
+            rendre: str_html
+        })
+        return
+    }
+
+    return
 }

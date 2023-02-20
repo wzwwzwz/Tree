@@ -22,18 +22,22 @@
             min-width: 280px;
             margin: 0 auto;
         }
+
+        .done_text {
+            font-size: 22px;
+            color: brown;
+        }
     </style>
 </head>
 
 
 <body>
     <div id="wrap">
-        原始<input type="file" name="" id="" webkitdirectory directory onchange="on_file_chg(this)">
-        worker<input type="file" name="" id="" webkitdirectory directory onchange="on_file_chg_worker(this)">
+        <input type="file" name="" id="" webkitdirectory directory onchange="on_file_chg_worker(this)">
         <div id="tree_wrap"></div>
     </div>
 
-    <script src="./tree.js"></script>
+    <!-- <script src="./tree.js"></script> -->
     <script>
         let data = [{
             name: "root",
@@ -69,49 +73,46 @@
                 }]
             }]
         }]
-        let gobjTree = new Tree()
-        gobjTree.setParams({
-            id: "tree_wrap",
-            edit: ["add", "edit", "delete"],
-            icon: true,
-            done: () => {
-                gobjTree.getData()
+
+
+        // 定义worker
+        var g_obj_webworker = null;
+        init_worker(get_worker_data)
+
+        send_worker_data({
+            "init_set": {
+                id: "tree_wrap",
+                edit: ["add", "edit", "delete"],
+                icon: true,
+                // done: function () {
+                //     gobjTree.getData()
+                // }
             }
         })
-        gobjTree.render(data)
-        gobjTree.onClickEdit(function (type, data) {
-            console.log("[编辑回调]", type, data);
-        })
+
+        // let gobjTree = new Tree()
+        // gobjTree.setParams({
+        //     id: "tree_wrap",
+        //     edit: ["add", "edit", "delete"],
+        //     icon: true,
+        //     done: () => {
+        //         gobjTree.getData()
+        //     }
+        // })
+        // gobjTree.render(data)
+        // gobjTree.onClickEdit(function (type, data) {
+        //     console.log("[编辑回调]", type, data);
+        // })
 
 
-        // 使用原始
-        function on_file_chg(dom) {
-            let oInput = dom.Files
-            var obj = new constructFileToTree()
-            console.time()
-            var data = obj.getData(dom.files)
-            console.timeEnd()
-            document.getElementById("tree_wrap").innerHTML = ""
-            gobjTree.render(data)
-        }
-
-        var obj_save_file_data = null
         // 使用worker
         function on_file_chg_worker(dom) {
-            obj_save_file_data = dom.files
             // console.log("[文件变动]");
-            worke_send(dom.files)
+            document.getElementById("tree_wrap").innerHTML = ""
+            send_worker_data({ file: dom.files })
         }
 
-        // 获取节点
-        function getNodeChecked(params) {
-            gobjTree.getChecked()
-        }
-
-        var g_obj_webworker = null;
-
-        init_worker(file_data_callback)
-        // 初始化
+        // ******************** worker 相关******************** //
         function init_worker(callback) {
             if (!location.port) {
                 return
@@ -123,20 +124,31 @@
             g_obj_webworker.onmessage = function (e) {
                 // console.log(e.data.msg);
                 callback(e.data)
-                obj_save_file_data = null
                 return
             }
         }
 
-        function worke_send(data) {
+        function send_worker_data(data) {
+            display_div(false)
             g_obj_webworker.postMessage(data)
         }
 
-        function file_data_callback(data) {
-            document.getElementById("tree_wrap").innerHTML = ""
-            gobjTree.render(data)
+        function get_worker_data(data) {
+            if ((render_html = data.rendre)) {
+                console.time()
+                document.getElementById("tree_wrap").innerHTML = "<div class='done_text'>渲染结束</div>"
+                document.getElementById("tree_wrap").innerHTML = render_html
+                display_div(true)
+                console.timeEnd()
 
+            }
         }
+
+
+        function display_div(b) {
+            document.getElementById("tree_wrap").style.display = b ? "block" : "none"
+        }
+
 
     </script>
 </body>
